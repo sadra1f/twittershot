@@ -130,4 +130,5 @@ dmypy.json
 
 # Project files
 /bin
+/out
 config.json

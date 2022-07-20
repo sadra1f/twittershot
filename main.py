@@ -1,5 +1,9 @@
+from datetime import datetime
+from jinja2 import Environment, PackageLoader, select_autoescape
+import os
 import json
 import tweepy
+import imgkit
 
 CONFIG_PATH = "config.json"
 
@@ -9,6 +13,7 @@ def main() -> None:
 
     with open(CONFIG_PATH) as conf:
         config = dict(json.load(conf))
+        imgkit_config = imgkit.config(wkhtmltoimage="./bin/wkhtmltoimage.exe")
 
     if config.get("bearer_token"):
         client = tweepy.Client(config.get("bearer_token"))
@@ -22,9 +27,23 @@ def main() -> None:
         tweet = client.get_tweet(tweet_id).data
         user = client.get_user(username=tweet_username).data
 
-        print(f"Tweet data: {dict(tweet)} \n")
-        print(f"User data: {dict(user)} \n")
-        print(f"Profile image: https://unavatar.io/twitter/{user.username}")
+        env = Environment(loader=PackageLoader("main"), autoescape=select_autoescape())
+        template = env.get_template("default.html")
+
+        if not os.path.exists("out"):
+            os.makedirs("out")
+
+        current_time = datetime.today().strftime("%Y-%m-%d-%H-%M-%S")
+        imgkit.from_string(
+            template.render(
+                name=user.name,
+                username=user.username,
+                content=tweet.text,
+                image=f"https://unavatar.io/twitter/{user.username}",
+            ),
+            f"out/twittershot-{current_time}.jpg",
+            config=imgkit_config,
+        )
     else:
         print("Operation failed.")
 
