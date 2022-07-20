@@ -11,9 +11,11 @@ pywebview = "==3.6.*"
 
 [dev-packages]
 black = "*"
+pyinstaller = "==5.2"
 
 [scripts]
 main = "python main.py"
+build = "python scripts/build.py main.py"
 
 [requires]
 python_version = "3.9"
