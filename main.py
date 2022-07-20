@@ -14,8 +14,14 @@ def main() -> None:
     with open(CONFIG_PATH) as conf:
         config = dict(json.load(conf))
 
+    imgkit_config_kwargs = (
+        {"wkhtmltoimage": config.get("wkhtmltoimage_path")}
+        if config.get("wkhtmltoimage_path")
+        else dict()
+    )
+
     template_name = config.get("template") if config.get("template") else "default"
-    imgkit_config = imgkit.config(wkhtmltoimage="./bin/wkhtmltoimage.exe")
+    imgkit_config = imgkit.config(**imgkit_config_kwargs)
     imgkit_options = (
         config.get("imgkit_options") if config.get("imgkit_options") else dict()
     )
