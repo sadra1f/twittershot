@@ -20,8 +20,6 @@ def main() -> None:
         config.get("imgkit_options") if config.get("imgkit_options") else dict()
     )
 
-    print(imgkit_options)
-
     if config.get("bearer_token"):
         client = tweepy.Client(config.get("bearer_token"))
 
@@ -45,7 +43,7 @@ def main() -> None:
             template.render(
                 name=user.name,
                 username=user.username,
-                content=tweet.text,
+                content=str(tweet.text).strip(),
                 image=f"https://unavatar.io/twitter/{user.username}",
             ),
             f"out/twittershot-{current_time}.jpg",
