@@ -13,7 +13,14 @@ def main() -> None:
 
     with open(CONFIG_PATH) as conf:
         config = dict(json.load(conf))
-        imgkit_config = imgkit.config(wkhtmltoimage="./bin/wkhtmltoimage.exe")
+
+    template_name = config.get("template") if config.get("template") else "default"
+    imgkit_config = imgkit.config(wkhtmltoimage="./bin/wkhtmltoimage.exe")
+    imgkit_options = (
+        config.get("imgkit_options") if config.get("imgkit_options") else dict()
+    )
+
+    print(imgkit_options)
 
     if config.get("bearer_token"):
         client = tweepy.Client(config.get("bearer_token"))
@@ -28,7 +35,7 @@ def main() -> None:
         user = client.get_user(username=tweet_username).data
 
         env = Environment(loader=PackageLoader("main"), autoescape=select_autoescape())
-        template = env.get_template("default.html")
+        template = env.get_template(f"{template_name}.html")
 
         if not os.path.exists("out"):
             os.makedirs("out")
@@ -43,6 +50,7 @@ def main() -> None:
             ),
             f"out/twittershot-{current_time}.jpg",
             config=imgkit_config,
+            options=imgkit_options,
         )
     else:
         print("Operation failed.")

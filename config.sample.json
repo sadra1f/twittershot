@@ -1,0 +1,11 @@
+{
+  "bearer_token": "TWITTER_BEARER_TOKEN",
+  "template": "default",
+  "imgkit_options": {
+    "format": "png",
+    "crop-h": "1080",
+    "crop-w": "1080",
+    "crop-x": "0",
+    "crop-y": "0"
+  }
+}
