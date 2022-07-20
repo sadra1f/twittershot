@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+imgkit = "==1.2.*"
+tweepy = "==4.10.*"
+
+[dev-packages]
+black = "*"
+
+[scripts]
+main = "python main.py"
+
+[requires]
+python_version = "3.9"
