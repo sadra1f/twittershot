@@ -3,7 +3,7 @@ import webview
 from api import API
 
 TITLE = "TwitterShot"
-VIEW = "res/main.html"
+VIEW = "resources/main.html"
 
 CONFIG_PATH = "config.json"
 

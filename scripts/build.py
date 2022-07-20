@@ -10,7 +10,7 @@ if __name__ == "__main__":
             "--onefile",
             "--windowed",
             "--add-data",
-            r"res;res/",
+            r"resources;resources/",
             args[1],
         ]
     )
