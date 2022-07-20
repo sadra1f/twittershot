@@ -1,27 +1,23 @@
-import os
+import webview
 
-from modules.config import get_config
-from modules.html import render_tweet_to_html
-from modules.image import html_to_image
-from modules.twitter import get_tweet
+from api import API
+
+TITLE = "TwitterShot"
+VIEW = "res/main.html"
 
 CONFIG_PATH = "config.json"
 
 
 def main() -> None:
-    config = get_config(CONFIG_PATH)
+    api = API(CONFIG_PATH)
 
-    if config.get("bearer_token"):
-        url = input("Enter tweet URL: ").strip()
+    win = webview.create_window(
+        title=TITLE,
+        url=VIEW,
+        js_api=api,
+    )
 
-        if not os.path.exists("out"):
-            os.makedirs("out")
-
-        tweet = get_tweet(url, config)
-        html = render_tweet_to_html(tweet, config)
-        html_to_image(html, config)
-    else:
-        print("Operation failed.")
+    webview.start()
 
 
 if __name__ == "__main__":
